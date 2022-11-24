@@ -1,57 +1,62 @@
-package com.example.mclab1;
-import android.graphics.Color;
+package com.example.mclab2;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-public class MainActivity extends AppCompatActivity
-{
-    int ch=1;
-    float font=30;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+public class MainActivity extends AppCompatActivity {
+
+    //Defining the Views
+    EditText e1,e2;
+    Button bt;
+    Spinner s;
+
+    //Data for populating in Spinner
+    String [] dept_array={"CSE","ECE","IT","Mech","Civil"};
+
+    String name,reg,dept;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TextView t= (TextView) findViewById(R.id.textView);
-        Button b1= (Button) findViewById(R.id.button1);
-        b1.setOnClickListener(new View.OnClickListener() {
+
+        //Referring the Views
+        e1= (EditText) findViewById(R.id.editText);
+        e2= (EditText) findViewById(R.id.editText2);
+
+        bt= (Button) findViewById(R.id.button);
+
+        s= (Spinner) findViewById(R.id.spinner);
+
+        //Creating Adapter for Spinner for adapting the data from array to Spinner
+        ArrayAdapter adapter= new ArrayAdapter(MainActivity.this,android.R.layout.simple_spinner_item,dept_array);
+        s.setAdapter(adapter);
+
+        //Creating Listener for Button
+        bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                t.setTextSize(font);
-                font = font + 5;
-                if (font == 50)
-                    font = 30;
-            }
-        });
-        Button b2= (Button) findViewById(R.id.button2);
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (ch) {
-                    case 1:
-                        t.setTextColor(Color.RED);
-                        break;
-                    case 2:
-                        t.setTextColor(Color.GREEN);
-                        break;
-                    case 3:
-                        t.setTextColor(Color.BLUE);
-                        break;
-                    case 4:
-                        t.setTextColor(Color.CYAN);
-                        break;
-                    case 5:
-                        t.setTextColor(Color.YELLOW);
-                        break;
-                    case 6:
-                        t.setTextColor(Color.MAGENTA);
-                        break;
-                }
-                ch++;
-                if (ch == 7);
-                ch = 1;
+
+                //Getting the Values from Views(Edittext & Spinner)
+                name=e1.getText().toString();
+                reg=e2.getText().toString();
+                dept=s.getSelectedItem().toString();
+
+                //Intent For Navigating to Second Activity
+                Intent i = new Intent(MainActivity.this,MainActivity2.class);
+
+                //For Passing the Values to Second Activity
+                i.putExtra("name_key", name);
+                i.putExtra("reg_key",reg);
+                i.putExtra("dept_key", dept);
+
+                startActivity(i);
+
             }
         });
     }
